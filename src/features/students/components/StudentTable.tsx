@@ -9,19 +9,21 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Student } from '../../../models';
 import { Delete, Edit } from '@material-ui/icons';
-import { IconButton } from '@material-ui/core';
-
-// const useStyles = makeStyles(
-//   table: {
-//     minWidth: 650,
-//   },
-// });
+import { Box, IconButton } from '@material-ui/core';
+import { capitalizeString, getMarkColor } from 'utils';
+import { useAppSelector } from 'app/hooks';
+import { selectStudentFilter } from '../studentSlice';
+import { selectCityList, selectCityMap } from 'features/city/citySlice';
 
 const useStyles = makeStyles((themes) => ({
   table: {},
   text: {
     fontSize: 15,
     padding: themes.spacing(0, 4),
+  },
+  tableRow: {
+    padding: themes.spacing(0),
+    height: 15,
   },
 }));
 
@@ -34,11 +36,14 @@ export interface StudentListProps {
 export default function StudentTable({ studentList, onEdit, onRemove }: StudentListProps) {
   const classes = useStyles();
 
+  const { _page, _limit } = useAppSelector(selectStudentFilter);
+  const cityMap = useAppSelector(selectCityMap);
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} size="small" aria-label="simple table">
         <TableHead>
-          <TableRow>
+          <TableRow className={classes.tableRow}>
             <TableCell width="10%" align="right" className={classes.text}>
               #
             </TableCell>
@@ -62,11 +67,11 @@ export default function StudentTable({ studentList, onEdit, onRemove }: StudentL
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody >
           {studentList.map((student, idx) => (
-            <TableRow key={student.id}>
+            <TableRow key={student.id} className={classes.tableRow}>
               <TableCell width="10%" align="right" className={classes.text}>
-                {idx + 1}
+                {(idx + 1) + ((_page - 1) * _limit)}
               </TableCell>
               <TableCell align="left" className={classes.text}>
                 {student.name}
@@ -75,13 +80,15 @@ export default function StudentTable({ studentList, onEdit, onRemove }: StudentL
                 {student.age}
               </TableCell>
               <TableCell align="left" className={classes.text}>
-                {student.gender}
+                {capitalizeString(student.gender)}
               </TableCell>
               <TableCell width="10%" align="right" className={classes.text}>
-                {student.mark}
+                <Box color={getMarkColor(student.mark)} fontWeight="bold">
+                  {student.mark}
+                </Box>
               </TableCell>
               <TableCell align="left" className={classes.text}>
-                {student.city}
+                {cityMap[student.city]?.name}
               </TableCell>
               <TableCell align="left" className={classes.text}>
                 <IconButton onClick={() => onEdit?.(student)}>

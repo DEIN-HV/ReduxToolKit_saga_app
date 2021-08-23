@@ -5,8 +5,8 @@ import { ListParams, ListResponse, PaginationParams, Student } from 'models';
 export interface studentState {
   loading: boolean;
   list: Student[];
-  filter?: ListParams;
-  pagination?: PaginationParams;
+  filter: ListParams;
+  pagination: PaginationParams;
 }
 
 const initialState: studentState = {
@@ -14,12 +14,12 @@ const initialState: studentState = {
   list: [],
   filter: {
     _page: 1,
-    _limit: 15,
+    _limit: 8,
   },
   pagination: {
     _page: 1,
-    _limit: 15,
-    _totalRows: 15,
+    _limit: 5,
+    _totalRows: 50,
   },
 };
 
@@ -30,11 +30,13 @@ const studentSlice = createSlice({
     fecthStudentList(state, action: PayloadAction<ListParams>) {
       state.loading = true;
     },
+
     fecthStudentListSuccess(state, action: PayloadAction<ListResponse<Student>>) {
       state.loading = false;
       state.list = action.payload.data;
       state.pagination = action.payload.pagination;
     },
+
     fecthStudentListFailed(state) {
       state.loading = false;
     },
@@ -42,6 +44,10 @@ const studentSlice = createSlice({
     setFilter(state, action: PayloadAction<ListParams>) {
       state.filter = action.payload;
     },
+
+    setFilterDebounce(state, action: PayloadAction<ListParams>) {
+    },
+
   },
 });
 

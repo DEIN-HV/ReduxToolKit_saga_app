@@ -7,6 +7,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { history } from 'utils';
 import dashboardReducer from 'features/dashboard/dashboardSlice';
 import studentReducers from 'features/students/studentSlice';
+import cityReducers from 'features/city/citySlice';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   counter: counterReducer,
   dashboard: dashboardReducer,
   student: studentReducers,
+  city: cityReducers,
 });
 
 export const store = configureStore({
