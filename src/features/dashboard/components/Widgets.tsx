@@ -16,7 +16,6 @@ const useStyle = makeStyles((themes) => ({
 
 export default function Widgets({ title, children }: WidgetsProps) {
 
-    console.log(children)
     const classes = useStyle();
     return (
         <Paper className={classes.root}>

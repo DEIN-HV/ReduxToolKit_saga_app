@@ -9,6 +9,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import { ConnectedRouter } from 'connected-react-router';
 import { history } from 'utils';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +19,18 @@ ReactDOM.render(
         <CssBaseline />
         <App />
       </ConnectedRouter>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

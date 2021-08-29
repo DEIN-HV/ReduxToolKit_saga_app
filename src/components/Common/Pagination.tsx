@@ -16,11 +16,7 @@ export interface PaginationItemProps {
 export function PaginationItem({ pagination, onChangePage }: PaginationItemProps) {
 
     const { _limit, _page, _totalRows } = pagination;
-    const count = Math.ceil(_totalRows / _limit);
-
-    // const handleChangePage = (e: any, page: number) => {
-    //     console.log(page)
-    // }
+    const count = Math.ceil(_totalRows / _limit)
 
     return (
         <Pagination count={count} color="primary" page={_page} onChange={onChangePage} boundaryCount={2} />

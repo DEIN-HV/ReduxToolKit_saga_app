@@ -59,7 +59,7 @@ export default function StudentFilter({ filter, cityList, onSearchChange, onFilt
                             onChange={onFilterChange}
                             labelId="City"
                             label="Filter By City">
-                            <MenuItem value="" >All</MenuItem>
+                            <MenuItem key='0' value="" >All</MenuItem>
                             {cityList.map((city) => (
                                 <MenuItem key={city.code} value={city.code}>{city.name}</MenuItem>
                             ))}
@@ -76,7 +76,7 @@ export default function StudentFilter({ filter, cityList, onSearchChange, onFilt
                             onChange={onSortChange}
                             labelId="sort"
                             label="Sort By Mark">
-                            <MenuItem value="" >No sort</MenuItem>
+                            <MenuItem key='0' value="" >No sort</MenuItem>
                             <MenuItem key='2' value='mark.desc'>Descending</MenuItem>
                             <MenuItem key='1' value='mark.asc'>Acsending</MenuItem>
                         </Select>
