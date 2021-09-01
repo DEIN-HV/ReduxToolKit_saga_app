@@ -6,5 +6,4 @@ export function PrivateRoute(props: RouteProps) {
     if (!isLogged) return <Redirect to="/login" />
 
     return <Route {...props} />
-
 }

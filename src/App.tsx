@@ -2,14 +2,20 @@ import { NotFound, PrivateRoute } from 'components/Common';
 import { Admin } from 'components/Layout';
 import LoginPage from 'features/auth/pages/LoginPage';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 
 function App() {
 
+  const isLogged = localStorage.getItem("access_token");
   return (
     <Switch>
-      <Route exact path={["/login", "/"]}>
+
+      <Route exact path="/">
+        {isLogged ? <Redirect to="/admin/dashboard" /> : <LoginPage />}
+      </Route>
+
+      <Route exact path="/login">
         <LoginPage />
       </Route>
 

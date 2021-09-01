@@ -1,23 +1,34 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { authActions, LoginPayload } from './../authSlice';
+import { authActions, LoginPayload, selectIslogged } from './../authSlice';
 import { call, delay, fork, put, take } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
+import { useAppSelector } from 'app/hooks';
+
+let isLogged: boolean;
 
 function* handleLogin(payLoad: LoginPayload) {
   try {
     yield delay(1000);
-    localStorage.setItem('access_token', 'fake_token');
-    put(
-      authActions.loginSuccess({
-        id: '1',
-        name: 'DienHV',
-      })
-    );
-    //redirect to admin page
-    yield put(push('/admin/dashboard'));
+
+    if (payLoad.username == 'admin' && payLoad.password == 'admin') {
+      localStorage.setItem('access_token', 'fake_token');
+      yield put(
+        authActions.loginSuccess({
+          id: '1',
+          name: 'admin',
+        })
+      );
+      isLogged = true;
+      //redirect to admin page
+      yield put(push('/admin/dashboard'));
+
+    }
+    else {
+      yield put(authActions.loginFailed('username or password wrong'));
+    }
 
   } catch (error) {
-    yield put(authActions.loginFailed(error.message));
+    //yield put(authActions.loginFailed(error.message));
   }
 }
 
@@ -26,19 +37,22 @@ function* handleLogout() {
   localStorage.removeItem('access_token');
 
   //redirect to login page
-  yield put(push('/login'));
+  yield put(push('/'));
 }
 
 function* watchLoginFlow() {
   while (true) {
-    const isLogged = Boolean(localStorage.getItem('access_token'));
+    isLogged = Boolean(localStorage.getItem('access_token'));
+
     if (!isLogged) {
       const action: PayloadAction<LoginPayload> = yield take(authActions.login.type);
-      yield fork(handleLogin, action.payload);
+      yield call(handleLogin, action.payload);
     }
 
-    yield take(authActions.logout.type);
-    yield call(handleLogout);
+    else {
+      yield take(authActions.logout.type);
+      yield call(handleLogout);
+    }
   }
 }
 
