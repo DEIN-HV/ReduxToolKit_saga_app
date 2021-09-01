@@ -3,10 +3,12 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { useAppDispatch } from 'app/hooks';
-import { authActions } from 'features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { authActions, selectCurrentUser, selectIslogged } from 'features/auth/authSlice';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import React from 'react';
+import React, { useRef } from 'react';
+import { IconButton } from '@material-ui/core';
+import { User } from 'models';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,6 +27,11 @@ export function Header() {
         dispatch(authActions.logout())
     }
 
+    const userInfo = useAppSelector(selectCurrentUser);
+    const islooged = useAppSelector(selectIslogged);
+    console.log(userInfo)
+    console.log(islooged)
+
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -32,7 +39,8 @@ export function Header() {
                     <Typography variant="h6" className={classes.title}>
                         Student Management
                     </Typography>
-                    <Button color="inherit" onClick={handleLogout}><ExitToAppIcon /> &nbsp;Logout</Button>
+                    <Typography variant="h6">{userInfo?.name}</Typography>
+                    <IconButton style={{ color: 'white' }} onClick={handleLogout}><ExitToAppIcon /></IconButton>
                 </Toolbar>
             </AppBar>
         </div>
